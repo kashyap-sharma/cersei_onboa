@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Onboard</string>
+    <string name="turn_on_flashlight">Turn on Flashlight</string>
+    <string name="turn_off_flashlight">Turn off Flashlight</string>
+    <string-array name="categories">
+        <item>Personal Care</item>
+        <item>Beverages</item>
+        <item>Bread/Bakery</item>
+        <item>Dairy</item>
+        <item>Dry/Baking Goods</item>
+        <item>Frozen Foods</item>
+        <item>Produce</item>
+        <item>Cleaners</item>
+        <item>Paper Goods</item>
+        <item>Other</item>
+    </string-array>
+    <string name="title_activity_view">View Local</string>
+    <string name="title_activity_view1">View Saved Data</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>

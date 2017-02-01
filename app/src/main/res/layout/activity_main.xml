@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:gradient="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+
+    android:gravity="center"
+    android:background="#fff"
+    tools:context="co.jlabs.add.activities.MainActivity">
+    <com.dynamitechetan.flowinggradient.FlowingGradient
+        android:layout_width="match_parent"
+        gradient:transition_duration = "4000"
+        gradient:transition_drawable="@drawable/trans"
+        android:layout_height="match_parent"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/icon"
+        android:src="@drawable/people"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textColorHint="#fff"
+        android:hint="Username"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        android:textColor="#fff"
+        android:layout_centerVertical="true"
+
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/username"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/edit1"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/edit2"
+
+        android:gravity="center"
+        android:inputType="textPassword"
+        android:background="@drawable/username"
+        android:hint="Password"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/edit1"
+        android:layout_height="48dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/signin"
+        android:textColor="#ffffff"
+        android:text="SIGN IN"
+        android:background="#80EAD5A3"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/edit2"/>
+
+
+
+
+    <Button
+        android:visibility="gone"
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:layout_marginLeft="40dp"
+       android:gravity="center"
+       android:textSize="20sp"
+       android:layout_centerVertical="true"
+       android:id="@+id/invent"
+       android:textColor="#fff"
+       android:background="#00000000"
+       android:layout_gravity="center"
+       android:layout_marginRight="40dp"
+       android:text="Inventory"/>
+    <Button
+     android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/invent"
+        android:layout_marginLeft="40dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:id="@+id/retail"
+        android:textColor="#fff"
+        android:background="#00000000"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="40dp"
+        android:text="Retailer"/>
+
+    <Button
+      android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/retail"
+        android:paddingRight="20dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/view_global"
+        android:textColor="#fff"
+        android:paddingLeft="20dp"
+        android:textAllCaps="false"
+        android:background="#00000000"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:text="View All"/>
+
+</RelativeLayout>
