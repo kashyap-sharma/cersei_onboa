@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,7 +47,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.refactor.kmpautotextview.KMPAutoComplTextView;
 import co.jlabs.add.AppController;
+import co.jlabs.add.InstantAutoComplete;
 import co.jlabs.add.R;
 import co.jlabs.add.StaticCatelog;
 import co.jlabs.add.db.ClassInventory;
@@ -59,8 +62,9 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
     private CaptureManager capture;
     private CompoundBarcodeView barcodeScannerView;
     private Button switchFlashlightButton;
-    private AutoCompleteTextView input_company;
-    private AutoCompleteTextView input_category;
+    private KMPAutoComplTextView   input_company;
+    private KMPAutoComplTextView input_category;
+    private KMPAutoComplTextView  input_scategory;
     private TextInputLayout input_layout_company;
     private EditText input_product;
     private TextInputLayout input_layout_pname;
@@ -96,10 +100,14 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
     String date="2001-01-01";
     String[] companies;
     String flags="";
+    String cat_id="";
     String flag="true";
     String flg="true";
     List<String> responseList = new ArrayList<String>();
     List<String> categoryList = new ArrayList<String>();
+    List<String> scategoryList = new ArrayList<String>();
+    List<String> sidcategoryList = new ArrayList<String>();
+    List<JSONArray> subcategoryList = new ArrayList<JSONArray>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,8 +130,9 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
     private void initView() {
 
-        input_company = (AutoCompleteTextView) findViewById(R.id.input_company);
-        input_category = (AutoCompleteTextView) findViewById(R.id.input_category);
+        input_company = (KMPAutoComplTextView ) findViewById(R.id.input_company);
+        input_category = (KMPAutoComplTextView) findViewById(R.id.input_category);
+        input_scategory = (KMPAutoComplTextView ) findViewById(R.id.input_scategory);
         input_layout_company = (TextInputLayout) findViewById(R.id.input_layout_company);
         input_product = (EditText) findViewById(R.id.input_product);
         input_layout_pname = (TextInputLayout) findViewById(R.id.input_layout_pname);
@@ -166,12 +175,17 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         edit_barcode = (Button) findViewById(R.id.edit_barcode);
         datepicker.setOnClickListener(this);
         edit_barcode.setOnClickListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, responseList);
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, categoryList);
-        input_company.setAdapter(adapter);
-        input_company.setThreshold(1);
-        input_category.setAdapter(adapter1);
-        input_category.setThreshold(1);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, responseList);
+//        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, responseList);
+        try {
+
+            Log.e("logs",""+responseList.get(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // input_company.setDatas(responseList);
+       // input_category.setDatas(categoryList);
+
         input_price.setText("₹");
         if(flags.contains("flags")){
             barcode.setVisibility(View.VISIBLE);
@@ -225,7 +239,11 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         // validate
         String company = input_company.getText().toString().trim();
         if (TextUtils.isEmpty(company)) {
-            Toast.makeText(this, "Company", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Company empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!responseList.contains(company)){
+            Toast.makeText(this, "Company not listed", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -262,9 +280,59 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         }
         String category = input_category.getText().toString().trim();
         if (TextUtils.isEmpty(category)) {
-            Toast.makeText(this, "Category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Category empty", Toast.LENGTH_SHORT).show();
             return;
         }
+        if(!categoryList.contains(category)){
+            Toast.makeText(this, "Category not listed.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        input_category.setOnPopupItemClickListener(new KMPAutoComplTextView.OnPopupItemClickListener() {
+            @Override
+            public void onPopupItemClick(CharSequence charSequence) {
+                    input_scategory.setEnabled(true);
+                    Log.e("logan","123");
+                try {
+                    JSONArray dats=subcategoryList.get(categoryList.indexOf(input_category.getText().toString().trim()));
+                    Log.e("soq",":"+dats.toString());
+
+                    for(int m=0;m<dats.length();m++){
+                        JSONObject ob=dats.getJSONObject(m);
+                        String subcat_name=ob.getString("subcat_name");
+                        String cat_id=ob.getString("cat_id");
+                        if(!scategoryList.contains(subcat_name)){
+                            scategoryList.add(subcat_name);
+                        }
+                        if(!sidcategoryList.contains(cat_id)){
+                            sidcategoryList.add(cat_id);
+                        }
+                    }
+                   // ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, scategoryList);
+                    input_scategory.setDatas(scategoryList);
+                    input_scategory.setThreshold(1);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        String scategory = input_scategory.getText().toString().trim();
+        if(!scategoryList.contains(scategory)){
+            Toast.makeText(getApplicationContext(), "SubCategory not listed.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        cat_id=sidcategoryList.get(scategoryList.indexOf(scategory));
+        if (TextUtils.isEmpty(input_scategory.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "SubCategory empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
+
+
+
 
         String details = input_details.getText().toString().trim();
         if (TextUtils.isEmpty(details)) {
@@ -464,8 +532,9 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             jsonObject.put("detail", input_details.getText().toString().trim());
             jsonObject.put("weight", input_weight.getText().toString().trim());
             jsonObject.put("price", (input_price.getText().toString().trim()).substring(1));
-            jsonObject.put("category_name", input_category.getText().toString().trim());
-            jsonObject.put("category_id", "");
+            //jsonObject.put("category_name", input_category.getText().toString().trim());
+           // jsonObject.put("category_name", input_category.getText().toString().trim());
+            jsonObject.put("category_id", cat_id);
             jsonObject.put("shelf_life", input_month.getText().toString().trim());
 
 
@@ -522,7 +591,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             }else{
                 jsonObject.put("barcode", bar);
             }
-            jsonObject.put("category_name", input_category.getText().toString().trim());
+            //jsonObject.put("category_name", input_category.getText().toString().trim());
             jsonObject.put("category_id", "");
             jsonObject.put("detail", input_details.getText().toString().trim());
             jsonObject.put("weight", input_weight.getText().toString().trim());
@@ -588,8 +657,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                                     if(!responseList.contains(company_name)){
                                         responseList.add(company_name);
                                     }
-                                    Log.e("some data",""+companies[i]);
-                                    Log.e("some data1",""+ob.getString("company_id"));
+
                                 }
 
 
@@ -623,7 +691,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         } catch (JSONException je) {
             je.printStackTrace();
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, StaticCatelog.getCategory(), jsonObject,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, StaticCatelog.getCategory()+"_new", jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -634,13 +702,17 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                             if (response.getBoolean("success")) {
                                 JSONArray data=response.getJSONArray("data");
                                 companies=new String [data.length()];
+
                                 for(int i=0;i<data.length();i++){
                                     JSONObject ob=data.getJSONObject(i);
-                                    String category_name=ob.getString("category_name");
+                                    String category_name=ob.getString("category");
+                                    JSONArray subcategory=ob.getJSONArray("subcategory");
                                     if(!categoryList.contains(category_name)){
                                         categoryList.add(category_name);
+                                        subcategoryList.add(subcategory);
                                     }
-
+                                    Log.e("some data",""+companies[i]);
+                                    Log.e("some data1",""+ob.getString("category"));
                                 }
 
 

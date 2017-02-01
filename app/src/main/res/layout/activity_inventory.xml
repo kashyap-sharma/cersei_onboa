@@ -59,22 +59,6 @@
                     android:id="@+id/co"
                     android:layout_height="wrap_content">
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_company"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:theme="@style/TextLabel"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content">
-                        <AutoCompleteTextView
-                            android:id="@+id/input_company"
-                            android:textColor="#fff"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Company" />
-
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_pname"
                         android:layout_width="match_parent"
                         android:layout_marginLeft="5dp"
@@ -90,6 +74,28 @@
                             android:hint="Product" />
 
                     </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_company"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:theme="@style/TextLabel"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content">
+                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
+                            android:id="@+id/input_company"
+                            android:textColor="#fff"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            app:completionHighlightColor="@color/colorAccent"
+                            app:completionTextColor="#80000000"
+                            app:completionTextSize="18sp"
+                            app:completionIgnoreCase="true"
+                            android:hint="Company" />
+
+                    </android.support.design.widget.TextInputLayout>
+
 
                 </LinearLayout>
 
@@ -139,25 +145,65 @@
 
 
                 </RelativeLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_category_lay"
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/cont"
-                    android:layout_weight="1"
-                    android:theme="@style/TextLabel"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="wrap_content">
-                    <AutoCompleteTextView
-                        android:id="@+id/input_category"
-                        android:textColor="#fff"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Category" />
 
-                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_below="@+id/cont"
+                    android:id="@+id/ca"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_category_lay"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+
+
+                        android:layout_weight="1"
+                        android:theme="@style/TextLabel"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content">
+                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
+                            android:id="@+id/input_category"
+                            android:textColor="#fff"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            app:completionHighlightColor="@color/colorAccent"
+                            app:completionTextColor="#80000000"
+                            app:completionTextSize="18sp"
+                            app:completionIgnoreCase="true"
+                            android:hint="Category" />
+
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_scategory_lay"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:theme="@style/TextLabel"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="wrap_content">
+                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
+                            android:id="@+id/input_scategory"
+                            android:textColor="#fff"
+                            android:completionThreshold="1"
+                            app:completionHighlightColor="@color/colorAccent"
+                            app:completionTextColor="#80000000"
+                            app:completionTextSize="18sp"
+                            app:completionIgnoreCase="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Sub Category" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+
+
                 <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                     android:layout_width="wrap_content"
                     android:id="@+id/conta"
@@ -172,7 +218,7 @@
                     android:id="@+id/input_proc"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_below="@+id/input_category_lay"
+                    android:layout_below="@+id/ca"
                     android:theme="@style/TextLabel"
 
                     android:layout_width="match_parent"
