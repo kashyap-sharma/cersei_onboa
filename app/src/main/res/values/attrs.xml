@@ -6,4 +6,10 @@
         <attr name="backgroundSelector" format="integer"/>
         <attr name="textTint" format="color"/>
     </declare-styleable>
+    <declare-styleable name="KMPAutoComplTextView">
+        <attr name="completionHighlightColor" format="reference|color" />
+        <attr name="completionTextColor" format="reference|color" />
+        <attr name="completionTextSize" format="dimension" />
+        <attr name="completionIgnoreCase" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -69,42 +69,43 @@
                         <EditText
                             android:id="@+id/input_product"
                             android:textColor="#fff"
+                            android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Product" />
 
                     </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_company"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:theme="@style/TextLabel"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content">
-                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
-                            android:id="@+id/input_company"
-                            android:textColor="#fff"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:completionThreshold="1"
-                            app:completionHighlightColor="@color/colorAccent"
-                            app:completionTextColor="#80000000"
-                            app:completionTextSize="18sp"
-                            app:completionIgnoreCase="true"
-                            android:hint="Company" />
 
-                    </android.support.design.widget.TextInputLayout>
 
 
                 </LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_company"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_below="@+id/co"
 
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content">
+                    <co.jlabs.add.kmpautotextview.KMPAutoComplTextView
+                        android:id="@+id/input_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:gravity="center"
+                        app:completionHighlightColor="@color/colorAccent"
+                        app:completionTextColor="#80000000"
+                        app:completionTextSize="18sp"
+                        app:completionIgnoreCase="true"
+                        android:hint="Company" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:text="text"
                     android:padding="5dp"
-                    android:layout_below="@+id/co"
+                    android:layout_below="@+id/input_layout_company"
                     android:gravity="center"
                     android:id="@+id/barcode"
                     android:visibility="gone"
@@ -162,10 +163,10 @@
 
 
                         android:layout_weight="1"
-                        android:theme="@style/TextLabel"
+
                         android:layout_marginRight="5dp"
                         android:layout_height="wrap_content">
-                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
+                        <co.jlabs.add.kmpautotextview.KMPAutoComplTextView
                             android:id="@+id/input_category"
                             android:textColor="#fff"
                             android:layout_width="match_parent"
@@ -178,29 +179,30 @@
                             android:hint="Category" />
 
                     </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_scategory_lay"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:theme="@style/TextLabel"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="wrap_content">
-                        <cn.refactor.kmpautotextview.KMPAutoComplTextView
-                            android:id="@+id/input_scategory"
-                            android:textColor="#fff"
-                            android:completionThreshold="1"
-                            app:completionHighlightColor="@color/colorAccent"
-                            app:completionTextColor="#80000000"
-                            app:completionTextSize="18sp"
-                            app:completionIgnoreCase="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Sub Category" />
 
-                    </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_scategory_lay"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:layout_below="@+id/ca"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content">
+                    <co.jlabs.add.kmpautotextview.KMPAutoComplTextView
+                        android:id="@+id/input_scategory"
+                        android:textColor="#fff"
+                        android:completionThreshold="1"
+                        app:completionHighlightColor="@color/colorAccent"
+                        app:completionTextColor="#80000000"
+                        app:completionTextSize="18sp"
+                        app:completionIgnoreCase="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Sub Category" />
+
+                </android.support.design.widget.TextInputLayout>
 
 
 
@@ -212,13 +214,13 @@
                     android:layout_margin="10dp"
                     android:entries="@array/categories"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/cont"
+                    android:layout_below="@+id/input_scategory_lay"
                     android:layout_height="wrap_content" />
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_proc"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_below="@+id/ca"
+                    android:layout_below="@+id/input_scategory_lay"
                     android:theme="@style/TextLabel"
 
                     android:layout_width="match_parent"
@@ -269,7 +271,7 @@
                             android:textColor="#fff"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Weight" />
+                            android:hint="Weight/QTY" />
 
                     </android.support.design.widget.TextInputLayout>
 

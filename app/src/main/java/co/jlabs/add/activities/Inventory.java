@@ -47,13 +47,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.refactor.kmpautotextview.KMPAutoComplTextView;
+
 import co.jlabs.add.AppController;
 import co.jlabs.add.InstantAutoComplete;
 import co.jlabs.add.R;
 import co.jlabs.add.StaticCatelog;
 import co.jlabs.add.db.ClassInventory;
 import co.jlabs.add.db.LocalDB;
+import co.jlabs.add.kmpautotextview.KMPAutoComplTextView;
 
 
 public class Inventory extends AppCompatActivity implements View.OnClickListener
@@ -62,7 +63,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
     private CaptureManager capture;
     private CompoundBarcodeView barcodeScannerView;
     private Button switchFlashlightButton;
-    private KMPAutoComplTextView   input_company;
+    private KMPAutoComplTextView input_company;
     private KMPAutoComplTextView input_category;
     private KMPAutoComplTextView  input_scategory;
     private TextInputLayout input_layout_company;
@@ -114,6 +115,9 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_inventory);
         context = this;
         flags=getIntent().getStringExtra("flags");
+        input_company = (KMPAutoComplTextView ) findViewById(R.id.input_company);
+        input_category = (KMPAutoComplTextView) findViewById(R.id.input_category);
+        input_scategory = (KMPAutoComplTextView ) findViewById(R.id.input_scategory);
         getCompanyNames();
         getCategories();
         initView();
@@ -130,9 +134,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
     private void initView() {
 
-        input_company = (KMPAutoComplTextView ) findViewById(R.id.input_company);
-        input_category = (KMPAutoComplTextView) findViewById(R.id.input_category);
-        input_scategory = (KMPAutoComplTextView ) findViewById(R.id.input_scategory);
+
         input_layout_company = (TextInputLayout) findViewById(R.id.input_layout_company);
         input_product = (EditText) findViewById(R.id.input_product);
         input_layout_pname = (TextInputLayout) findViewById(R.id.input_layout_pname);
@@ -162,6 +164,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
         done = (Button) findViewById(R.id.done);
+        done.setEnabled(false);
         done.setOnClickListener(this);
         main = (RelativeLayout) findViewById(R.id.main);
         msg = (TextView) findViewById(R.id.msg);
@@ -178,8 +181,8 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, responseList);
 //        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, responseList);
         try {
-
-            Log.e("logs",""+responseList.get(1));
+            Log.e("asasa","here");
+            Log.e("asasa",""+responseList.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -230,20 +233,32 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
             }
         });
-
+        input_category.setOnPopupItemClickListener(new KMPAutoComplTextView.OnPopupItemClickListener() {
+            @Override
+            public void onPopupItemClick(CharSequence charSequence) {
+                //input_scategory.setEnabled(true);
+                Log.e("logan","123");
+                done.setEnabled(true);
+                submits();
+            }
+        });
 
 
     }
 
-    private void submit() {
+    private void submits() {
         // validate
         String company = input_company.getText().toString().trim();
         if (TextUtils.isEmpty(company)) {
             Toast.makeText(this, "Company empty", Toast.LENGTH_SHORT).show();
+            input_category.setText("");
+            done.setEnabled(false);
             return;
         }
         if(!responseList.contains(company)){
             Toast.makeText(this, "Company not listed", Toast.LENGTH_SHORT).show();
+            input_category.setText("");
+            done.setEnabled(false);
             return;
         }
 
@@ -262,11 +277,15 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
         if (flags.equals("flags")&&flag.equals("false")) {
             if (bar.equals("blank")) {
+                input_category.setText("");
+                done.setEnabled(false);
                 Toast.makeText(this, "Barcode", Toast.LENGTH_SHORT).show();
                 return;
             }
         }else if(flag.equals("true")&&!flags.equals("flags")){
             if (bar.equals("blank")) {
+                input_category.setText("");
+                done.setEnabled(false);
                 Toast.makeText(this, "Barcode", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -275,24 +294,34 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
         String product = input_product.getText().toString().trim();
         if (TextUtils.isEmpty(product)) {
+            input_category.setText("");
+            done.setEnabled(false);
             Toast.makeText(this, "Product", Toast.LENGTH_SHORT).show();
             return;
         }
         String category = input_category.getText().toString().trim();
         if (TextUtils.isEmpty(category)) {
+            input_category.setText("");
+            done.setEnabled(false);
             Toast.makeText(this, "Category empty", Toast.LENGTH_SHORT).show();
             return;
         }
+
+
+        //trace
         if(!categoryList.contains(category)){
+            input_category.setText("");
+            done.setEnabled(false);
             Toast.makeText(this, "Category not listed.", Toast.LENGTH_SHORT).show();
             return;
         }
-        input_category.setOnPopupItemClickListener(new KMPAutoComplTextView.OnPopupItemClickListener() {
-            @Override
-            public void onPopupItemClick(CharSequence charSequence) {
-                    input_scategory.setEnabled(true);
+
+                    //input_scategory.setEnabled(true);
                     Log.e("logan","123");
                 try {
+                    ProgressDialog pd = new ProgressDialog(Inventory.this);
+                    pd.setMessage("loading");
+                    pd.show();
                     JSONArray dats=subcategoryList.get(categoryList.indexOf(input_category.getText().toString().trim()));
                     Log.e("soq",":"+dats.toString());
 
@@ -300,6 +329,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                         JSONObject ob=dats.getJSONObject(m);
                         String subcat_name=ob.getString("subcat_name");
                         String cat_id=ob.getString("cat_id");
+
                         if(!scategoryList.contains(subcat_name)){
                             scategoryList.add(subcat_name);
                         }
@@ -309,20 +339,90 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                     }
                    // ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, scategoryList);
                     input_scategory.setDatas(scategoryList);
-                    input_scategory.setThreshold(1);
+                    pd.dismiss();
+                    //input_scategory.setThreshold(1);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        });
 
+
+
+        // TODO validate success, do something
+
+
+    }
+
+    private void submit() {
+        String company = input_company.getText().toString().trim();
+        if (TextUtils.isEmpty(company)) {
+            Toast.makeText(this, "Company empty", Toast.LENGTH_SHORT).show();
+            input_category.setText("");
+            return;
+        }
+        if(!responseList.contains(company)){
+            Toast.makeText(this, "Company not listed", Toast.LENGTH_SHORT).show();
+            input_category.setText("");
+            return;
+        }
+
+        try {
+            catag = conta.getSelectedItem().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        if (catag.equals("blank")) {
+//            Toast.makeText(this, "Category", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+//        Log.e("catag", catag);
+
+        if (flags.equals("flags")&&flag.equals("false")) {
+            if (bar.equals("blank")) {
+                input_category.setText("");
+                Toast.makeText(this, "Barcode", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }else if(flag.equals("true")&&!flags.equals("flags")){
+            if (bar.equals("blank")) {
+                input_category.setText("");
+                Toast.makeText(this, "Barcode", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+
+        String product = input_product.getText().toString().trim();
+        if (TextUtils.isEmpty(product)) {
+            input_category.setText("");
+            Toast.makeText(this, "Product", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String category = input_category.getText().toString().trim();
+        if (TextUtils.isEmpty(category)) {
+            input_category.setText("");
+            Toast.makeText(this, "Category empty", Toast.LENGTH_SHORT).show();
+            return;
+        }else{
+            Log.e("ssss","ssss");
+        }
+
+
+        //trace
+        if(!categoryList.contains(category)){
+            input_category.setText("");
+            Toast.makeText(this, "Category not listed.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String scategory = input_scategory.getText().toString().trim();
         if(!scategoryList.contains(scategory)){
             Toast.makeText(getApplicationContext(), "SubCategory not listed.", Toast.LENGTH_SHORT).show();
             return;
         }
         cat_id=sidcategoryList.get(scategoryList.indexOf(scategory));
+        Log.e("cat_ids",cat_id);
         if (TextUtils.isEmpty(input_scategory.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "SubCategory empty", Toast.LENGTH_SHORT).show();
             return;
@@ -349,7 +449,11 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 
 
         String month = input_month.getText().toString().trim();
-        if (TextUtils.isEmpty(month)&&(!TextUtils.isDigitsOnly(month))) {
+        Log.e("month",month);
+        if (TextUtils.isEmpty(month)) {
+            Toast.makeText(this, "Days", Toast.LENGTH_SHORT).show();
+            return;
+        }  if (!TextUtils.isDigitsOnly(month)) {
             Toast.makeText(this, "Days", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -364,26 +468,28 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
 //            Toast.makeText(this, "MFG", Toast.LENGTH_SHORT).show();
 //            return;
 //        }
-        String price = input_price.getText().toString().trim();
+        String price = input_price.getText().toString().trim().substring(1);
+        Log.e("month",price);
         if (TextUtils.isEmpty(price)) {
             Toast.makeText(this, "Price", Toast.LENGTH_SHORT).show();
             return;
         }
 
+//
+//        ClassInventory inv = new ClassInventory();
+//        inv.company_name = company;
+//        inv.product_name = product;
+//        inv.barcode = bar;
+//        inv.category = category;
+//        inv.product_detail = details;
+//        inv.weight = weight;
+//        inv.MFG = date;
+//        inv.month = month;
+//        inv.price = price;
+//
+//        LocalDB db = new LocalDB(this);
+//        db.addInventory(inv);
 
-        ClassInventory inv = new ClassInventory();
-        inv.company_name = company;
-        inv.product_name = product;
-        inv.barcode = bar;
-        inv.category = category;
-        inv.product_detail = details;
-        inv.weight = weight;
-        inv.MFG = date;
-        inv.month = month;
-        inv.price = price;
-
-        LocalDB db = new LocalDB(this);
-        db.addInventory(inv);
         if(flags.contains("flags")){
             sendEdited();
 
@@ -392,13 +498,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
         }
 
 
-
-        // TODO validate success, do something
-
-
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -536,13 +636,13 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
            // jsonObject.put("category_name", input_category.getText().toString().trim());
             jsonObject.put("category_id", cat_id);
             jsonObject.put("shelf_life", input_month.getText().toString().trim());
-
+            Log.e("cat_idds",""+jsonObject.toString());
 
         } catch (JSONException je) {
             je.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, StaticCatelog.sendInventoryData(), jsonObject,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, StaticCatelog.sendInventoryData()+"_new", jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -659,7 +759,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                                     }
 
                                 }
-
+                                input_company.setDatas(responseList);
 
                             }
                         } catch (JSONException e) {
@@ -671,7 +771,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("TAG", "Error: ", error.getMessage());
-                        pDialog.hide();
+//                        pDialog.hide();
                     }
                 });
         AppController.getInstance().addToRequestQueue(request, tag_json_obj);
@@ -715,6 +815,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                                     Log.e("some data1",""+ob.getString("category"));
                                 }
 
+                                 input_category.setDatas(categoryList);
 
                             }
                         } catch (JSONException e) {
@@ -726,7 +827,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("TAG", "Error: ", error.getMessage());
-                        pDialog.hide();
+//                        pDialog.hide();
                     }
                 });
         AppController.getInstance().addToRequestQueue(request, tag_json_obj);

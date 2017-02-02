@@ -85,7 +85,7 @@ public class StaticCatelog {
     }
     public static String sendEditedInventoryData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/edit_item";
+        return "http://lannister-api.elasticbeanstalk.com/cersei/edit_item_new";
     }
     public static String sendEditedRetailerData()
     {
