@@ -93,13 +93,13 @@ public class KMPAutoComplTextView extends AutoCompleteTextView {
     private void onInputTextChanged(String input) {
         matchResult(input);
 
-        if (mAdapter.mList.size() == 0) {
-           KMPAutoComplTextView.this.dismissDropDown();
-            return;
-        }
+//        if (mAdapter.mList.size() == 0) {
+//           KMPAutoComplTextView.this.dismissDropDown();
+//            return;
+//        }
         mAdapter.notifyDataSetChanged();
 
-        if (!KMPAutoComplTextView.this.isPopupShowing() || mAdapter.mList.size() > 0) {
+        if (!KMPAutoComplTextView.this.isPopupShowing() || mAdapter.mList.size() >= 0) {
             showDropDown();
         }
 

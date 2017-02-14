@@ -102,9 +102,11 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
     String[] companies;
     String flags="";
     String cat_id="";
+    String companyid="";
     String flag="true";
     String flg="true";
     List<String> responseList = new ArrayList<String>();
+    List<String> company_idList = new ArrayList<String>();
     List<String> categoryList = new ArrayList<String>();
     List<String> scategoryList = new ArrayList<String>();
     List<String> sidcategoryList = new ArrayList<String>();
@@ -194,8 +196,6 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             barcode.setVisibility(View.VISIBLE);
             edit_barcode.setVisibility(View.VISIBLE);
             cont.setVisibility(View.GONE);
-            input_company.setText(getIntent().getStringExtra("company_name"));
-            input_category.setText(getIntent().getStringExtra("category_name"));
             input_product.setText(getIntent().getStringExtra("product_name"));
             input_details.setText(getIntent().getStringExtra("detail"));
             barcode.setText(getIntent().getStringExtra("barcode"));
@@ -262,6 +262,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             return;
         }
 
+        companyid=company_idList.get(responseList.indexOf(company));
         try {
             catag = conta.getSelectedItem().toString();
         } catch (Exception e) {
@@ -365,6 +366,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             input_category.setText("");
             return;
         }
+
 
         try {
             catag = conta.getSelectedItem().toString();
@@ -625,7 +627,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             jsonObject.put("api_key", StaticCatelog.getStringProperty(context, "api_key"));
             jsonObject.put("manager_id", StaticCatelog.getStringProperty(context, "manager_id"));
             jsonObject.put("user_type", "manager");
-            jsonObject.put("company_id", "");
+            jsonObject.put("company_id", companyid);
             jsonObject.put("company_name", input_company.getText().toString().trim());
             jsonObject.put("product_name", input_product.getText().toString().trim());
             jsonObject.put("barcode", bar);
@@ -683,7 +685,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
             jsonObject.put("manager_id", StaticCatelog.getStringProperty(context, "manager_id"));
             jsonObject.put("user_type", "manager");
             jsonObject.put("item_id", getIntent().getStringExtra("item_id"));
-            jsonObject.put("company_id", "");
+            jsonObject.put("company_id", companyid);
             jsonObject.put("company_name", input_company.getText().toString().trim());
             jsonObject.put("product_name", input_product.getText().toString().trim());
             if(flag.equals("true")){
@@ -692,7 +694,7 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                 jsonObject.put("barcode", bar);
             }
             //jsonObject.put("category_name", input_category.getText().toString().trim());
-            jsonObject.put("category_id", "");
+            jsonObject.put("category_id", cat_id);
             jsonObject.put("detail", input_details.getText().toString().trim());
             jsonObject.put("weight", input_weight.getText().toString().trim());
             jsonObject.put("price", (input_price.getText().toString().trim()).substring(1));
@@ -754,8 +756,11 @@ public class Inventory extends AppCompatActivity implements View.OnClickListener
                                 for(int i=0;i<data.length();i++){
                                     JSONObject ob=data.getJSONObject(i);
                                     String company_name=ob.getString("company_name");
+                                    String company_id=ob.getString("company_id");
                                     if(!responseList.contains(company_name)){
                                         responseList.add(company_name);
+                                        company_idList.add(company_id);
+
                                     }
 
                                 }

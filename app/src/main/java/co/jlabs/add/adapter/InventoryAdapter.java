@@ -159,7 +159,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
         Intent inga=new Intent(v.getContext(), Inventory.class);
 
         inga.putExtra("company_name",image.getCompany_name());
-        inga.putExtra("company_id",image.getCompany_id());
+        //inga.putExtra("company_id",image.getCompany_id());
         inga.putExtra("product_name",image.getProduct_name());
         inga.putExtra("item_id",image.getItem_id());
         inga.putExtra("detail",image.getDetail());
