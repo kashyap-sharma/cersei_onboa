@@ -71,42 +71,42 @@ public class StaticCatelog {
     }
     public static String getLogin()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/auth/mlogin";
+        return "http://45.55.72.208/cersei/auth/mlogin";
     }
     public static String sendRetailerData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/add_retailer";
+        return "http://45.55.72.208/cersei/add_retailer";
 
     }
 
     public static String sendInventoryData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/add_item";
+        return "http://45.55.72.208/cersei/add_item";
     }
     public static String sendEditedInventoryData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/edit_item_new";
+        return "http://45.55.72.208/cersei/edit_item_new";
     }
     public static String sendEditedRetailerData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/edit_retailer";
+        return "http://45.55.72.208/cersei/edit_retailer";
     }
 
     public static String getInventoryData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/show_item";
+        return "http://45.55.72.208/cersei/show_item";
     }
     public static String getCompanyName()
     {
-        return "http://lannister-api.elasticbeanstalk.com//cersei/show_company";
+        return "http://45.55.72.208/cersei/show_company";
     }
     public static String getCategory()
     {
-        return "http://lannister-api.elasticbeanstalk.com//cersei/show_category";
+        return "http://45.55.72.208/cersei/show_category";
     }
     public static String getRetailorData()
     {
-        return "http://lannister-api.elasticbeanstalk.com/cersei/show_retailer";
+        return "http://45.55.72.208/cersei/show_retailer";
     }
     public static CharSequence SpanIt(String text1, String text2)
     {
